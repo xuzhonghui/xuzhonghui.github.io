@@ -1,6 +1,6 @@
 title: 小眼睛羊羊博客
 description: 记录技术、想法与生活
 url: "https://xuzhonghui.github.io"
-baseurl: "/你xuzhonghui"
+baseurl: "/xuzhonghui"
 theme: jekyll-theme-minimal
 lang: zh-CN
