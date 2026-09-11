@@ -1,0 +1,32 @@
+---
+---
+
+@import "{{ site.theme }}";
+
+* { box-sizing: border-box; }
+body { margin: 0; color: #263238; background: #f6f8fa; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Microsoft YaHei", sans-serif; }
+.blog-shell { display: grid; grid-template-columns: 280px minmax(0, 1fr); max-width: 1200px; min-height: 100vh; margin: 0 auto; background: #fff; box-shadow: 0 0 24px rgba(31, 35, 40, .08); }
+.blog-sidebar { position: sticky; top: 0; height: 100vh; padding: 36px 24px; overflow-y: auto; color: #dbeafe; background: #172554; }
+.site-title { color: #fff; font-size: 24px; font-weight: 700; text-decoration: none; }
+.site-description { margin: 12px 0 28px; color: #bfdbfe; font-size: 14px; line-height: 1.7; }
+.nav-title { margin: 0 0 12px; color: #fff; font-weight: 700; }
+.category-list, .subcategory-list, .post-list { margin: 0; padding: 0; list-style: none; }
+.category-item { margin: 18px 0; }
+.category-name { display: block; margin-bottom: 8px; color: #fff; font-size: 16px; font-weight: 700; }
+.subcategory-item { margin: 10px 0; }
+.subcategory-name { display: block; margin-bottom: 6px; color: #93c5fd; font-size: 13px; }
+.post-list li, li.post-list { margin: 7px 0; }
+.js-post-link { display: block; color: #dbeafe; font-size: 14px; line-height: 1.5; text-decoration: none; }
+.js-post-link:hover, .js-post-link.active { color: #fff; font-weight: 700; }
+.article-content { width: auto; max-width: none; min-height: 100vh; padding: 56px 64px; overflow-wrap: break-word; }
+.article-content h1, .article-content h2, .article-content h3 { margin-top: 1.6em; color: #172554; }
+.article-content h1:first-child { margin-top: 0; }
+.article-content img, .article-content video { max-width: 100%; height: auto; }
+.article-content pre { padding: 16px; overflow-x: auto; border-radius: 8px; background: #1e293b; }
+.article-content code { font-family: Consolas, "Courier New", monospace; }
+.welcome { max-width: 680px; margin: 100px auto; text-align: center; }
+@media (max-width: 760px) {
+  .blog-shell { display: block; }
+  .blog-sidebar { position: static; height: auto; padding: 24px 20px; }
+  .article-content { padding: 32px 20px; }
+}

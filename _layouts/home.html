@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="{{ site.lang | default: 'zh-CN' }}">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  {% seo %}
+  <link rel="stylesheet" href="{{ '/assets/css/style.css' | relative_url }}">
+</head>
+<body>
+  <div class="blog-shell">
+    <aside class="blog-sidebar">
+      <a class="site-title" href="{{ '/' | relative_url }}">{{ site.title }}</a>
+      <p class="site-description">{{ site.description }}</p>
+      <nav class="article-nav" aria-label="文章目录">
+        <p class="nav-title">文章目录</p>
+        {{ content }}
+      </nav>
+    </aside>
+    <main id="article-content" class="article-content">
+      <div class="welcome">
+        <h1>欢迎来到 {{ site.title }}</h1>
+        <p>{{ site.description }}</p>
+        <p>请从左侧目录选择一篇文章开始阅读。</p>
+      </div>
+    </main>
+  </div>
+  <script>
+    (() => {
+      const content = document.getElementById("article-content");
+      const links = [...document.querySelectorAll(".js-post-link")];
+      const allowedPaths = new Set(links.map(link => new URL(link.href, window.location.origin).pathname));
+
+      async function loadPost(postPath, pushHistory = true) {
+        const path = new URL(postPath, window.location.origin).pathname;
+        if (!allowedPaths.has(path)) return;
+        content.innerHTML = "<p>正在加载文章……</p>";
+        try {
+          const response = await fetch(path);
+          if (!response.ok) throw new Error("文章加载失败");
+          const html = await response.text();
+          const page = new DOMParser().parseFromString(html, "text/html");
+          const article = page.querySelector("section");
+          if (!article) throw new Error("未找到文章正文");
+          content.innerHTML = article.innerHTML;
+          document.title = page.title;
+          links.forEach(link => {
+            const linkPath = new URL(link.href, window.location.origin).pathname;
+            link.classList.toggle("active", linkPath === path);
+          });
+          if (pushHistory) {
+            const url = `${window.location.pathname}?post=${encodeURIComponent(path)}`;
+            window.history.pushState({ post: path }, "", url);
+          }
+          window.scrollTo({ top: 0, behavior: "smooth" });
+        } catch (error) {
+          content.innerHTML = "<p>文章加载失败，请稍后重试。</p>";
+        }
+      }
+
+      links.forEach(link => link.addEventListener("click", event => {
+        event.preventDefault();
+        loadPost(link.href);
+      }));
+      window.addEventListener("popstate", () => {
+        const postPath = new URLSearchParams(window.location.search).get("post");
+        if (postPath) loadPost(postPath, false);
+      });
+      const initialPost = new URLSearchParams(window.location.search).get("post");
+      if (initialPost) loadPost(initialPost, false);
+    })();
+  </script>
+</body>
+</html>

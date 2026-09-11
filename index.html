@@ -1,35 +1,36 @@
 ---
-layout: default
+layout: home
 title: 首页
 ---
 
-<h1>{{ site.title }}</h1>
-<p>{{ site.description }}</p>
+{% assign category_groups = site.posts | group_by: "category" %}
 
-<h2>最新文章</h2>
+<ul class="category-list">
+  {% for category_group in category_groups %}
+    <li class="category-item">
+      <span class="category-name">{{ category_group.name | default: "未分类" }}</span>
 
-{% for post in site.posts %}
-<article>
-  <h3>
-    <a href="{{ site.baseurl }}{{ post.url }}">{{ post.title }}</a>
-  </h3>
-
-  <p>
-    {{ post.date | date: "%Y-%m-%d" }}
-
-    {% if post.category %}
-    · 分类：<span>{{ post.category }}</span>
-    {% endif %}
-
-    {% if post.subcategory %}
-    / <span>{{ post.subcategory }}</span>
-    {% endif %}
-  </p>
-
-  <p>{{ post.excerpt | strip_html | truncate: 160 }}</p>
-
-  <p>
-    <a href="{{ site.baseurl }}{{ post.url }}">阅读全文 →</a>
-  </p>
-</article>
-{% endfor %}
+      {% assign subcategory_groups = category_group.items | group_by: "subcategory" %}
+      <ul class="subcategory-list">
+        {% for subcategory_group in subcategory_groups %}
+          {% if subcategory_group.name != "" %}
+            <li class="subcategory-item">
+              <span class="subcategory-name">{{ subcategory_group.name }}</span>
+              <ul class="post-list">
+                {% for post in subcategory_group.items %}
+                  <li><a class="js-post-link" href="{{ post.url | relative_url }}">{{ post.title }}</a></li>
+                {% endfor %}
+              </ul>
+            </li>
+          {% else %}
+            <li class="post-list">
+              {% for post in subcategory_group.items %}
+                <a class="js-post-link" href="{{ post.url | relative_url }}">{{ post.title }}</a>
+              {% endfor %}
+            </li>
+          {% endif %}
+        {% endfor %}
+      </ul>
+    </li>
+  {% endfor %}
+</ul>
