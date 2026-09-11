@@ -25,6 +25,7 @@
     <aside id="article-toc" class="article-toc" aria-label="本页大纲" hidden>
       <p class="toc-title">本页大纲</p>
       <nav id="article-toc-links"></nav>
+      <div id="toc-resizer" class="toc-resizer" role="separator" aria-label="调整大纲宽度" aria-orientation="vertical"></div>
     </aside>
     <main id="article-content" class="article-content">
       <div class="welcome">
@@ -40,7 +41,11 @@
       const toc = document.getElementById("article-toc");
       const tocLinks = document.getElementById("article-toc-links");
       const tocToggle = document.getElementById("toc-toggle");
+      const tocResizer = document.getElementById("toc-resizer");
+      const tocMinWidth = 140;
+      const tocMaxWidth = 320;
       let tocEnabled = localStorage.getItem("blog-toc-enabled") !== "false";
+      let tocWidth = Number(localStorage.getItem("blog-toc-width")) || 200;
       const tree = document.getElementById("category-tree");
       const posts = JSON.parse(document.getElementById("posts-data").textContent);
       const pathOf = value => new URL(value, window.location.origin).pathname;
@@ -102,6 +107,12 @@
         topIndex += 1;
       });
 
+      function setTocWidth(width, save = false) {
+        tocWidth = Math.min(tocMaxWidth, Math.max(tocMinWidth, Math.round(width)));
+        document.documentElement.style.setProperty("--toc-width", `${tocWidth}px`);
+        if (save) localStorage.setItem("blog-toc-width", String(tocWidth));
+      }
+
       function updateTocVisibility() {
         const hasHeadings = tocLinks.children.length > 0;
         const visible = tocEnabled && hasHeadings;
@@ -126,7 +137,8 @@
           tocLinks.append(link);
         });
 
-        updateTocVisibility();
+        setTocWidth(tocWidth);
+      updateTocVisibility();
       }
 
       function scrollToHashOrTop() {
@@ -170,12 +182,33 @@
         }
       }
 
+      tocResizer.addEventListener("pointerdown", event => {
+        const startX = event.clientX;
+        const startWidth = toc.offsetWidth;
+        tocResizer.setPointerCapture(event.pointerId);
+        document.body.classList.add("toc-resizing");
+
+        const resize = moveEvent => setTocWidth(startWidth + moveEvent.clientX - startX);
+        const finish = upEvent => {
+          tocResizer.releasePointerCapture(upEvent.pointerId);
+          tocResizer.removeEventListener("pointermove", resize);
+          tocResizer.removeEventListener("pointerup", finish);
+          document.body.classList.remove("toc-resizing");
+          setTocWidth(tocWidth, true);
+        };
+
+        tocResizer.addEventListener("pointermove", resize);
+        tocResizer.addEventListener("pointerup", finish);
+      });
+
       tocToggle.addEventListener("click", () => {
         tocEnabled = !tocEnabled;
         localStorage.setItem("blog-toc-enabled", String(tocEnabled));
-        updateTocVisibility();
+        setTocWidth(tocWidth);
+      updateTocVisibility();
       });
 
+      setTocWidth(tocWidth);
       updateTocVisibility();
 
       tree.addEventListener("click", event => {
