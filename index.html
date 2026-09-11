@@ -23,10 +23,12 @@ title: 首页
               </ul>
             </li>
           {% else %}
-            <li class="post-list">
-              {% for post in subcategory_group.items %}
-                <a class="js-post-link" href="{{ post.url | relative_url }}">{{ post.title }}</a>
-              {% endfor %}
+            <li>
+              <ul class="post-list">
+                {% for post in subcategory_group.items %}
+                  <li><a class="js-post-link" href="{{ post.url | relative_url }}">{{ post.title }}</a></li>
+                {% endfor %}
+              </ul>
             </li>
           {% endif %}
         {% endfor %}
