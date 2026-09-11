@@ -15,9 +15,16 @@
       </a>
       <p class="site-description">{{ site.description }}</p>
       <nav class="article-nav" aria-label="文章目录">
-        <p class="nav-title">文章目录</p>
+        <div class="nav-heading">
+          <p class="nav-title">文章目录</p>
+          <button id="toc-toggle" class="toc-toggle" type="button" aria-pressed="true">隐藏大纲</button>
+        </div>
         {{ content }}
       </nav>
+    </aside>
+    <aside id="article-toc" class="article-toc" aria-label="本页大纲" hidden>
+      <p class="toc-title">本页大纲</p>
+      <nav id="article-toc-links"></nav>
     </aside>
     <main id="article-content" class="article-content">
       <div class="welcome">
@@ -26,16 +33,14 @@
         <p>请从左侧目录选择一篇文章开始阅读。</p>
       </div>
     </main>
-    <aside id="article-toc" class="article-toc" aria-label="本页大纲" hidden>
-      <p class="toc-title">本页大纲</p>
-      <nav id="article-toc-links"></nav>
-    </aside>
   </div>
   <script>
     (() => {
       const content = document.getElementById("article-content");
       const toc = document.getElementById("article-toc");
       const tocLinks = document.getElementById("article-toc-links");
+      const tocToggle = document.getElementById("toc-toggle");
+      let tocEnabled = localStorage.getItem("blog-toc-enabled") !== "false";
       const tree = document.getElementById("category-tree");
       const posts = JSON.parse(document.getElementById("posts-data").textContent);
       const pathOf = value => new URL(value, window.location.origin).pathname;
@@ -97,10 +102,19 @@
         topIndex += 1;
       });
 
+      function updateTocVisibility() {
+        const hasHeadings = tocLinks.children.length > 0;
+        const visible = tocEnabled && hasHeadings;
+
+        toc.hidden = !visible;
+        document.body.classList.toggle("toc-visible", visible);
+        tocToggle.textContent = tocEnabled ? "隐藏大纲" : "显示大纲";
+        tocToggle.setAttribute("aria-pressed", String(tocEnabled));
+      }
+
       function buildToc() {
         const headings = [...content.querySelectorAll("h2, h3, h4")];
         tocLinks.replaceChildren();
-        toc.hidden = headings.length === 0;
 
         headings.forEach((heading, index) => {
           if (!heading.id) heading.id = `article-heading-${index + 1}`;
@@ -111,6 +125,8 @@
           link.textContent = heading.textContent;
           tocLinks.append(link);
         });
+
+        updateTocVisibility();
       }
 
       function scrollToHashOrTop() {
@@ -153,6 +169,14 @@
           content.innerHTML = "<p>文章加载失败，请稍后重试。</p>";
         }
       }
+
+      tocToggle.addEventListener("click", () => {
+        tocEnabled = !tocEnabled;
+        localStorage.setItem("blog-toc-enabled", String(tocEnabled));
+        updateTocVisibility();
+      });
+
+      updateTocVisibility();
 
       tree.addEventListener("click", event => {
         const link = event.target.closest(".js-post-link");
