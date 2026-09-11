@@ -2,6 +2,8 @@
 layout: post
 title: "你好，GitHub Pages"
 date: 2026-09-10
+
+categories: [未分类]
 ---
 
 这是我的第一篇博客文章。

@@ -9,8 +9,10 @@
 <body>
   <div class="blog-shell">
     <aside class="blog-sidebar">
-      <img class="site-avatar" src="{{ '/assets/images/avatar.jpg' | relative_url }}" alt="小羊哥的头像">
-      <a class="site-title" href="{{ '/' | relative_url }}">{{ site.title }}</a>
+      <a class="site-brand" href="{{ '/' | relative_url }}" aria-label="返回首页">
+        <img class="site-avatar" src="{{ '/assets/images/avatar.jpg' | relative_url }}" alt="小羊哥的头像">
+        <span class="site-title">{{ site.title }}</span>
+      </a>
       <p class="site-description">{{ site.description }}</p>
       <nav class="article-nav" aria-label="文章目录">
         <p class="nav-title">文章目录</p>
@@ -28,13 +30,72 @@
   <script>
     (() => {
       const content = document.getElementById("article-content");
-      const links = [...document.querySelectorAll(".js-post-link")];
-      const allowedPaths = new Set(links.map(link => new URL(link.href, window.location.origin).pathname));
+      const tree = document.getElementById("category-tree");
+      const posts = JSON.parse(document.getElementById("posts-data").textContent);
+      const pathOf = value => new URL(value, window.location.origin).pathname;
+      const allowedPaths = new Set(posts.map(post => pathOf(post.url)));
+      const root = new Map();
+
+      posts.forEach(post => {
+        const categories = Array.isArray(post.categories) && post.categories.length
+          ? post.categories
+          : ["未分类"];
+        let branch = root;
+        let node;
+
+        categories.forEach(category => {
+          if (!branch.has(category)) {
+            branch.set(category, { children: new Map(), posts: [] });
+          }
+          node = branch.get(category);
+          branch = node.children;
+        });
+        node.posts.push(post);
+      });
+
+      function createPost(post) {
+        const item = document.createElement("li");
+        const link = document.createElement("a");
+        link.className = "js-post-link";
+        link.href = post.url;
+        link.textContent = post.title;
+        item.append(link);
+        return item;
+      }
+
+      function createFolder(name, node, depth, open) {
+        const folder = document.createElement("details");
+        folder.className = `tree-folder tree-depth-${depth}`;
+        folder.open = open;
+
+        const summary = document.createElement("summary");
+        summary.textContent = name;
+        folder.append(summary);
+
+        const children = document.createElement("ul");
+        children.className = "tree-children";
+        node.children.forEach((child, childName) => {
+          const item = document.createElement("li");
+          item.append(createFolder(childName, child, depth + 1, false));
+          children.append(item);
+        });
+
+        node.posts.forEach(post => children.append(createPost(post)));
+        folder.append(children);
+        return folder;
+      }
+
+      let topIndex = 0;
+      root.forEach((node, name) => {
+        tree.append(createFolder(name, node, 0, topIndex === 0));
+        topIndex += 1;
+      });
 
       async function loadPost(postPath, pushHistory = true) {
-        const path = new URL(postPath, window.location.origin).pathname;
+        const path = pathOf(postPath);
         if (!allowedPaths.has(path)) return;
         content.innerHTML = "<p>正在加载文章……</p>";
+
         try {
           const response = await fetch(path);
           if (!response.ok) throw new Error("文章加载失败");
@@ -42,12 +103,13 @@
           const page = new DOMParser().parseFromString(html, "text/html");
           const article = page.querySelector("section");
           if (!article) throw new Error("未找到文章正文");
+
           content.innerHTML = article.innerHTML;
           document.title = page.title;
-          links.forEach(link => {
-            const linkPath = new URL(link.href, window.location.origin).pathname;
-            link.classList.toggle("active", linkPath === path);
+          document.querySelectorAll(".js-post-link").forEach(link => {
+            link.classList.toggle("active", pathOf(link.href) === path);
           });
+
           if (pushHistory) {
             const url = `${window.location.pathname}?post=${encodeURIComponent(path)}`;
             window.history.pushState({ post: path }, "", url);
@@ -58,14 +120,18 @@
         }
       }
 
-      links.forEach(link => link.addEventListener("click", event => {
+      tree.addEventListener("click", event => {
+        const link = event.target.closest(".js-post-link");
+        if (!link) return;
         event.preventDefault();
         loadPost(link.href);
-      }));
+      });
+
       window.addEventListener("popstate", () => {
         const postPath = new URLSearchParams(window.location.search).get("post");
         if (postPath) loadPost(postPath, false);
       });
+
       const initialPost = new URLSearchParams(window.location.search).get("post");
       if (initialPost) loadPost(initialPost, false);
     })();

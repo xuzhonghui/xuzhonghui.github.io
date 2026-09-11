@@ -3,36 +3,16 @@ layout: home
 title: 首页
 ---
 
-{% assign category_groups = site.posts | group_by: "category" %}
+<div id="category-tree" class="category-tree" aria-label="文章目录"></div>
 
-<ul class="category-list">
-  {% for category_group in category_groups %}
-    <li class="category-item">
-      <span class="category-name">{{ category_group.name | default: "未分类" }}</span>
-
-      {% assign subcategory_groups = category_group.items | group_by: "subcategory" %}
-      <ul class="subcategory-list">
-        {% for subcategory_group in subcategory_groups %}
-          {% if subcategory_group.name != "" %}
-            <li class="subcategory-item">
-              <span class="subcategory-name">{{ subcategory_group.name }}</span>
-              <ul class="post-list">
-                {% for post in subcategory_group.items %}
-                  <li><a class="js-post-link" href="{{ post.url | relative_url }}">{{ post.title }}</a></li>
-                {% endfor %}
-              </ul>
-            </li>
-          {% else %}
-            <li>
-              <ul class="post-list">
-                {% for post in subcategory_group.items %}
-                  <li><a class="js-post-link" href="{{ post.url | relative_url }}">{{ post.title }}</a></li>
-                {% endfor %}
-              </ul>
-            </li>
-          {% endif %}
-        {% endfor %}
-      </ul>
-    </li>
-  {% endfor %}
-</ul>
+<script id="posts-data" type="application/json">
+[
+{% for post in site.posts %}
+  {
+    "title": {{ post.title | jsonify }},
+    "url": {{ post.url | relative_url | jsonify }},
+    "categories": {{ post.categories | jsonify }}
+  }{% unless forloop.last %},{% endunless %}
+{% endfor %}
+]
+</script>

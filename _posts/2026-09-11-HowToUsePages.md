@@ -2,8 +2,7 @@
 layout: post
 title: "GitHub Pages 搭建笔记"
 date: 2026-09-11
-category: 技术
-subcategory: GitHub Pages
+categories: [技术, GitHub Pages]
 tags: [Jekyll, 博客]
 ---
 
