@@ -1,6 +1,6 @@
 title: 小羊哥
 description: 记录技术、想法与生活
 url: "https://xuzhonghui.github.io"
-baseurl: "/xuzhonghui"
+baseurl: ""
 theme: jekyll-theme-minimal
 lang: zh-CN
