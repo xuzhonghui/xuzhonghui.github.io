@@ -197,6 +197,7 @@ body.toc-visible .blog-shell {
   align-self: start;
   max-height: 100vh;
   padding: 24px 18px;
+  overflow-x: hidden;
   overflow-y: auto;
   background: #222;
   border-right: 1px solid #3a3a3a;
@@ -206,8 +207,8 @@ body.toc-visible .blog-shell {
   position: absolute;
   z-index: 2;
   top: 0;
-  right: -5px;
-  width: 10px;
+  right: 0;
+  width: 8px;
   height: 100%;
   cursor: col-resize;
 }
@@ -215,7 +216,7 @@ body.toc-visible .blog-shell {
 .toc-resizer::after {
   position: absolute;
   top: 0;
-  left: 4px;
+  left: 3px;
   width: 2px;
   height: 100%;
   background: transparent;
@@ -262,3 +263,6 @@ body.toc-visible .blog-shell {
 @media (max-width: 760px) {
   .article-toc { display: none; }
 }
+.post-header { margin: 0 0 30px; }
+.post-title { margin: 0 0 8px; }
+.post-date { margin: 0; color: #9a9a9a; font-size: 13px; }
