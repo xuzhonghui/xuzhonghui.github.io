@@ -2,17 +2,34 @@
 layout: default
 title: 首页
 ---
-<p><a href="{{ site.baseurl }}/categories.html">查看全部分类</a></p>
+
 <h1>{{ site.title }}</h1>
 <p>{{ site.description }}</p>
 
-<h2>文章</h2>
+<h2>最新文章</h2>
 
-<ul>
-  {% for post in site.posts %}
-  <li>
+{% for post in site.posts %}
+<article>
+  <h3>
     <a href="{{ site.baseurl }}{{ post.url }}">{{ post.title }}</a>
-    <small>{{ post.date | date: "%Y-%m-%d" }}</small>
-  </li>
-  {% endfor %}
-</ul>
+  </h3>
+
+  <p>
+    {{ post.date | date: "%Y-%m-%d" }}
+
+    {% if post.category %}
+    · 分类：<span>{{ post.category }}</span>
+    {% endif %}
+
+    {% if post.subcategory %}
+    / <span>{{ post.subcategory }}</span>
+    {% endif %}
+  </p>
+
+  <p>{{ post.excerpt | strip_html | truncate: 160 }}</p>
+
+  <p>
+    <a href="{{ site.baseurl }}{{ post.url }}">阅读全文 →</a>
+  </p>
+</article>
+{% endfor %}
