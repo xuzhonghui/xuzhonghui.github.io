@@ -49,3 +49,29 @@ git merge --abort   # 二选一： 普通合并拉取时
 git rebase --abort  # 二选一： --rebase 拉取时
 ```
 
+如果要重命名文件
+```python
+# 常规操作
+git mv 旧文件名 新文件名
+git commit -m "重命名文件"
+git push
+
+# 如果已经在资源管理器里手动重命名过了
+git status
+git add -A
+git commit -m "重命名文件"
+git push
+```
+
+如果要删除文件
+```python
+git rm 文件名
+git commit -m "删除不再使用的文件"
+git push
+```
+
+删除或重命名后向反悔
+```python
+git restore --staged 文件名     # 取消暂存
+git restore 文件名  # 将文件恢复到最近一次提交的状态
+```
