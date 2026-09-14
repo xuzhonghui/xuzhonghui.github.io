@@ -1,5 +1,7 @@
 title: 小羊哥
-description: 学如逆水行舟，不进则退; 心似平原跑马，易放难收
+description: |
+  学如逆水行舟，不进则退
+  心似平原跑马，易放难收
 url: "https://xuzhonghui.github.io"
 baseurl: ""
 theme: jekyll-theme-minimal

@@ -1,3 +1,5 @@
+[前往博客首页](https://xuzhonghui.github.io/)
+
 常规提交：
 ```python
 git status  # 查看当前修改
