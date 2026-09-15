@@ -210,6 +210,82 @@ body {
 .article-content pre { padding: 16px; overflow-x: auto; border: 1px solid #3a3a3a; border-radius: 6px; background: #292929; }
 .article-content code { color: #e2e2e2; font-family: Consolas, "Courier New", monospace; background: #303030; }
 .article-content pre code { background: transparent; }
+
+/* VS Code Dark 风格的 Rouge 语法高亮。 */
+.article-content .highlight,
+.article-content .highlight pre { color: #d4d4d4; background: #1e1e1e; }
+.article-content .highlight .c,
+.article-content .highlight .ch,
+.article-content .highlight .cm,
+.article-content .highlight .c1,
+.article-content .highlight .cs { color: #6a9955; }
+.article-content .highlight .cp { color: #c586c0; }
+.article-content .highlight .err { color: #f44747; }
+.article-content .highlight .k,
+.article-content .highlight .kc,
+.article-content .highlight .kd,
+.article-content .highlight .kn,
+.article-content .highlight .kp,
+.article-content .highlight .kr,
+.article-content .highlight .kt,
+.article-content .highlight .ow { color: #c586c0; }
+.article-content .highlight .na,
+.article-content .highlight .nf,
+.article-content .highlight .fm { color: #dcdcaa; }
+.article-content .highlight .nb,
+.article-content .highlight .bp,
+.article-content .highlight .nc,
+.article-content .highlight .ne,
+.article-content .highlight .nn,
+.article-content .highlight .nt,
+.article-content .highlight .nv,
+.article-content .highlight .vc,
+.article-content .highlight .vg,
+.article-content .highlight .vi { color: #4ec9b0; }
+.article-content .highlight .no,
+.article-content .highlight .mi,
+.article-content .highlight .mf,
+.article-content .highlight .mh,
+.article-content .highlight .mo,
+.article-content .highlight .il { color: #b5cea8; }
+.article-content .highlight .s,
+.article-content .highlight .sa,
+.article-content .highlight .sb,
+.article-content .highlight .sc,
+.article-content .highlight .dl,
+.article-content .highlight .sd,
+.article-content .highlight .s2,
+.article-content .highlight .se,
+.article-content .highlight .sh,
+.article-content .highlight .si,
+.article-content .highlight .sx,
+.article-content .highlight .sr,
+.article-content .highlight .s1,
+.article-content .highlight .ss { color: #ce9178; }
+.article-content .highlight .o,
+.article-content .highlight .p { color: #d4d4d4; }
+
+/* 提高 Markdown 表格在深色背景上的可读性。 */
+.post-body table {
+  width: 100%;
+  margin: 1.5em 0;
+  border: 1px solid #4a4a4a;
+  border-collapse: collapse;
+  background: #252526;
+}
+.post-body th,
+.post-body td {
+  padding: 10px 14px;
+  border: 1px solid #454545;
+  text-align: left;
+}
+.post-body th {
+  color: #f3f3f3;
+  background: #333b4a;
+  font-weight: 700;
+}
+.post-body tbody tr:nth-child(even) { background: #2d2d30; }
+.post-body tbody tr:hover { background: #37373d; }
 .welcome { max-width: 680px; margin: 0; text-align: left; }
 
 @media (max-width: 760px) {
