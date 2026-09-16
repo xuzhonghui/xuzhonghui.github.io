@@ -1,8 +1,8 @@
 ---
 layout: post
-title: "python-新特性-3.4-异步asyncio"
+title: "python-版本特性-异步asyncio"
 date: 2026-09-15
-categories: [技术, python, 新特性]
+categories: [技术, python, 版本特性]
 tags: [GitHub Pages, Jekyll, Markdown, 博客]
 ---
 
