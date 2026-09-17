@@ -6,12 +6,3 @@ url: "https://xuzhonghui.github.io"
 baseurl: ""
 theme: jekyll-theme-minimal
 lang: zh-CN
-
-# 文章正文会先经过 Liquid 解析；这会将代码示例中的 {{ ... }} 或 {% ... %}
-# 误当作模板语法。博客文章不使用动态 Liquid，因此统一关闭其解析。
-defaults:
-  - scope:
-      path: ""
-      type: posts
-    values:
-      render_with_liquid: false
