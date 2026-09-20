@@ -17,7 +17,7 @@ asyncio 能力全景
 | 并发执行   | create_task()、gather()、TaskGroup         | 同时调度多个协程            |
 
 
-# 运行一个最简单的异步程序: asyncio.run() 
+## 运行一个最简单的异步程序: asyncio.run()
 ```python
 import asyncio
 
@@ -36,9 +36,9 @@ asyncio.run(debug_async())
 结束
 ```
 
-# 任务并发：gather() && create_task() && TaskGroup
+## 任务并发：gather() && create_task() && TaskGroup
 
-## gather()
+### gather()
 
 示例代码：
 
@@ -71,7 +71,7 @@ asyncio.run(main())
 结束
 ```
 
-## create_task()
+### create_task()
 
 示例代码:
 
@@ -105,7 +105,7 @@ asyncio.run(main())
 结束
 ```
 
-## TaskGroup
+### TaskGroup
 
 示例代码：
 
@@ -137,7 +137,7 @@ asyncio.run(main())
 结束
 ```
 
-## 三者之间的主要区别
+### 三者之间的主要区别
 
 create_task 其实就是一个单独的任务，所以，这里主要比较 gather 和 TaskGroup
 
