@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "python-版本特性-3.6-f-string"
-date: 2026-09-16
+date: 2026-09-16 10:00:00 +0800
 categories: [技术, python, 版本特性]
 tags: [GitHub Pages, Jekyll, Markdown, 博客]
 ---
