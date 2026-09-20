@@ -63,7 +63,7 @@ if text := input("请输入内容："):
 
 ## 3、使用场景
 
-### 3、1 `if` 中缓存计算结果
+### 3.1 `if` 中缓存计算结果
 
 ```python
 text = 'abc'
@@ -72,7 +72,7 @@ if result := 'abc' in text:
     print(result)
 ```
 
-### 3、2 `while` 中持续读取，直到没有数据
+### 3.2 `while` 中持续读取，直到没有数据
 
 ```python
 while line := file.readline():
